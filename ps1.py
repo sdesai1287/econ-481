@@ -10,7 +10,7 @@ def github() -> str:
     returns: a link to your solutions on GitHub.
     """
 
-    return "https://github.com/sdesai1287/econ-481/blob/main/ProblemSets/ps1.py"
+    return "https://github.com/sdesai1287/econ-481/blob/main/ps1.py"
 
 github()
 
