@@ -52,14 +52,16 @@ y.shape, X.shape
 import numpy as np
 from scipy.optimize import minimize
 
+N, d = X.shape
+
 def log_likelihood(parameters, y, X) :
     """
     arguments: parameters, y and X to do log likelihood estimation on
     returns: the log likelihood function to minimize
     """
     parameters = np.array(parameters).reshape((-1, 1))
-    N = X.shape[0]
-    X_with_intercept = np.hstack((np.ones((X.shape[0], 1)), X))
+
+    X_with_intercept = np.hstack((np.ones((N, 1)), X))
     
     
     # Calculate predicted values
@@ -73,7 +75,7 @@ def estimate_mle(y: np.array, X: np.array) -> np.array:
     arguments: data y and X representing observations
     returns: MLE estimates of the parameters
     """
-    parameters = [0] * (X.shape[1] + 1)
+    parameters = [0] * (d + 1)
     result = minimize(log_likelihood, x0 = parameters, args=(y, X), method= 'Nelder-Mead')   
     return result.x.reshape((-1, 1))
     
@@ -96,7 +98,7 @@ def sum_of_squared_residuals(parameters, y, X) :
     returns: the sum of squared residuals to minimize 
     """
     parameters = np.array(parameters, dtype=np.float64)
-    X = np.hstack((np.ones((X.shape[0], 1)), X))
+    X = np.hstack((np.ones((N, 1)), X))
     parameters = parameters.reshape((-1, 1))
     
     # Calculate predicted values
@@ -114,7 +116,7 @@ def estimate_ols(y: np.array, X: np.array) -> np.array:
     arguments: data y and X representing observations
     returns: OLS estimates of the parameters
     """
-    parameters = [0] * (X.shape[1] + 1)
+    parameters = [0] * (d + 1)
     min = -99999999999999
     max = 99999999999999
     bounds = ((min, max), (min, max), (min, max), (min, max))
