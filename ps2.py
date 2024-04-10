@@ -31,7 +31,7 @@ def simulate_data(seed: int = 481) -> tuple:
     """
     np.random.seed(seed)
         
-    X = np.random.normal(loc= 0, scale= 2, size=(1000, 3))
+    X = np.random.normal(loc= 0, scale= np.sqrt(2), size=(1000, 3))
     e = np.random.normal(loc= 0, scale= 1, size=(1000, 1))
     y = 5 + 3 * X[:, 0] + 2 * X[:, 1] + 6 * X[:, 2] + e[:, 0]
     y = y.reshape((-1, 1))
