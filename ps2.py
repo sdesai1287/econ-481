@@ -63,12 +63,11 @@ def log_likelihood(parameters, y, X) :
 
     X_with_intercept = np.hstack((np.ones((N, 1)), X))
     
-    
     # Calculate predicted values
     y_pred = np.matmul(X_with_intercept, parameters)
     residuals = y - y_pred
-    ll = N * 0.5 * (np.log(2 * np.pi)) + 0.5 * np.sum(residuals**2)
-    return ll
+    ll = -(N * 0.5 * (np.log(2 * np.pi)) + 0.5 * np.sum(residuals**2))
+    return -ll
 
 def estimate_mle(y: np.array, X: np.array) -> np.array:
     """
@@ -97,9 +96,8 @@ def sum_of_squared_residuals(parameters, y, X) :
     arguments: parameters, y and X to do OLS estimation on
     returns: the sum of squared residuals to minimize 
     """
-    parameters = np.array(parameters, dtype=np.float64)
+    parameters = np.array(parameters, dtype=np.float64).reshape((-1, 1))
     X = np.hstack((np.ones((N, 1)), X))
-    parameters = parameters.reshape((-1, 1))
     
     # Calculate predicted values
     y_pred = np.matmul(X, parameters)
@@ -117,10 +115,7 @@ def estimate_ols(y: np.array, X: np.array) -> np.array:
     returns: OLS estimates of the parameters
     """
     parameters = [0] * (d + 1)
-    min = -99999999999999
-    max = 99999999999999
-    bounds = ((min, max), (min, max), (min, max), (min, max))
-    result = minimize(sum_of_squared_residuals, x0 = parameters, bounds = bounds, args=(y, X))
+    result = minimize(sum_of_squared_residuals, x0 = parameters, args=(y, X))
     return result.x.reshape((-1, 1))
     
 estimate_ols(y, X)
